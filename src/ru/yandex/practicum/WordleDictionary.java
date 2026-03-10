@@ -1,5 +1,6 @@
 package ru.yandex.practicum;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -9,6 +10,38 @@ import java.util.List;
  */
 public class WordleDictionary {
 
-    private List<String> words;
+    private final List<String> words;
+
+    public WordleDictionary(List<String> words) {
+        this.words = cleanWords(words);
+    }
+
+    public String getWord(int index) {
+        return words.get(index);
+    }
+
+    public int getSize() {
+        return words.size();
+    }
+
+    public List<String> getDictionary() {
+        return words;
+    }
+
+    public boolean contains(String word) {
+        return word != null && words.contains(word);
+    }
+
+    private List<String> cleanWords(List<String> words) {
+        List<String> cleanWords = new ArrayList<>();
+
+        for (String word : words) {
+            if (word.length() == 5) {
+                word = word.toLowerCase();
+                cleanWords.add(word);
+            }
+        }
+        return cleanWords;
+    }
 
 }
