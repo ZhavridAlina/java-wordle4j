@@ -13,18 +13,17 @@ import java.util.Scanner;
     вывести состояние игры и конечный результат
  */
 public class Wordle {
+    public static final String WORDS_FILE = "words_ru.txt";
+    public static final String LOG_FILE = "game_log.txt";
+    public static final int STEPS = 6;
 
     public static void main(String[] args) {
-        String fileName = "words_ru.txt";
-        String logFileName = "game_log.txt";
         Scanner scanner = new Scanner(System.in);
         Random random = new Random();
-        boolean rightAnswer = false;
-
-        GameLogger logger = new GameLogger(logFileName);
+        GameLogger logger = new GameLogger(LOG_FILE);
         logger.log("Игра началась");
+        WordleDictionaryLoader dictionaryLoader = new WordleDictionaryLoader(WORDS_FILE, "UTF-8", logger);
 
-        WordleDictionaryLoader dictionaryLoader = new WordleDictionaryLoader(fileName, "UTF-8", logger);
         WordleDictionary wordleDictionary = null;
         try {
             wordleDictionary = dictionaryLoader.loadDictionary();
@@ -43,9 +42,17 @@ public class Wordle {
             logger.close();
             return;
         }
-        wordleGame.setSteps(6);
+        wordleGame.setSteps(STEPS);
         logger.log("Игра инициализирована. Максимально шагов: 6");
 
+        runGame(scanner, wordleGame, wordleDictionary, logger);
+
+        logger.log("Игра закончена");
+        logger.close();
+    }
+
+    public static void runGame(Scanner scanner, WordleGame wordleGame, WordleDictionary wordleDictionary, GameLogger logger) {
+        boolean rightAnswer = false;
         while ((wordleGame.getSteps() > 0) && (!rightAnswer)) {
             String check = "";
             System.out.println("Введите слово: ");
@@ -73,9 +80,5 @@ public class Wordle {
             System.out.println("Вы не угадали. Загаданное слово: " + wordleGame.getAnswer());
             logger.log("Проигрыш. Ответ был: " + wordleGame.getAnswer());
         }
-        logger.log("Игра закончена");
-        logger.close();
-
-
     }
 }

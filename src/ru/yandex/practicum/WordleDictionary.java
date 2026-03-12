@@ -9,7 +9,7 @@ import java.util.List;
     также этот класс может содержать рутинные функции по сравнению слов, букв и т.д.
  */
 public class WordleDictionary {
-
+    private final int WORD_LENGTH=5;
     private final List<String> words;
 
     public WordleDictionary(List<String> words) {
@@ -36,7 +36,7 @@ public class WordleDictionary {
         List<String> cleanWords = new ArrayList<>();
 
         for (String word : words) {
-            if (word.length() == 5) {
+            if (word.length() == WORD_LENGTH) {
                 word = word.toLowerCase();
                 cleanWords.add(word);
             }
